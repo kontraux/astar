@@ -20,7 +20,7 @@ local current_node
             x = x,
             y = y,
         }
-        node.h = node.x - end_node.x + node.y - end_node.y
+        node.h = math.abs(node.x - end_node.x) + math.abs(node.y - end_node.y)
         node.g = current_node.g + 1
         node.f = node.g + node.h
         return node
@@ -66,13 +66,31 @@ local current_node
         return path
     end
 
+    local function lowestf(t)
+        local key = 1
+        local v = t[key].f
+        for i = 1, #t do
+            if t[i].f < v then
+                key = i
+            end
+        end
+        return table.remove(t, key)
+    end
+
     local path = {}
     local function begin()
+        local count = 1
         ::continue::
-        current_node = table.remove(open, 1)
+        count = count + 1
+        local message = "No path found!"
+        assert(open[1], message)
+
+        current_node = lowestf(open)
+        print("Current node: x: ", current_node.x, "y: ", current_node.y, "h: ", current_node.h, "g: ", current_node.g, "f: ", current_node.f)
 
         if current_node.x == end_node.x and current_node.y == end_node.y then
             print("Found a path from ", start_node.x, start_node.y, "to ", end_node.x, end_node.y)
+            print("count: ", count)
             path = reconstruct_path(current_node)
             return path
         end
@@ -88,7 +106,7 @@ local current_node
                 x = current_node.x,
                 y = current_node.y,
             }
-            if not in_table(node, closed) then
+            if not in_table(node, closed) and not in_table(node, open) then
                 table.insert(open, node)
             end
         end

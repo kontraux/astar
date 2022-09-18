@@ -62,7 +62,7 @@ end
 function map:print()
     for _,t in pairs(self) do 
         io.write("\n")
-        for i, v in pairs(t) do
+        for _, v in pairs(t) do
             io.write(v)
         end
     end
