@@ -13,8 +13,8 @@ local endx = math.random(1, #grid)
 local endy = math.random(1, #grid[endx])
 
 grid[#grid / 2][#grid / 2] = 5
-
-astar.new(startx, starty, endx, endy)
+grid[startx][starty] = "BOOBAS"
+local path = astar.path(startx, starty, endx, endy, grid)
 
 for i = 1, #grid do
     io.write("\n")
@@ -22,5 +22,6 @@ for i = 1, #grid do
         io.write(" ", v)
     end
 end
+
 
 return world
